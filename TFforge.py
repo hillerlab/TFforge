@@ -55,17 +55,6 @@ def __get_arguments():
 	if args.add_suffix is not None: 	suffix = args.add_suffix
 	return args
 
-def read_transcription_factors(lib):
-	transcription_factors = []
-	data = subprocess.check_output("grep '>' {}".format(lib), shell=True).decode().strip().split('\n>')
-	# partial(str.split, sep='\n>')
-	with open(lib) as m_lib:
-		for line in m_lib:
-			if line.startswith(">"):
-				tf = line.split("\t")[0][1:]
-				transcription_factors.append(tf)
-	return transcription_factors
-
 def create_branch_scoring_job_list(elements, tf, windowsize, args, filter_branch_threshold=None, filter_branches=None, background=None, stubb=False, append_to="jobFile"):
 	with open(append_to, "a") as job_file:
 		for cne in elements:
@@ -99,7 +88,7 @@ def __analyse_sequences():
 	else:
 		elements = args.elementfile.split(',')
 
-	transcription_factors = read_transcription_factors(args.motiflibrary)
+	transcription_factors = [line.strip() for line in open(args.motiflibrary, "r")]
 	
 	#########################
 	# create a job file per transcription factor, for computing branch scores (eventually by extracting scores from the simulation) for every CNE and running them

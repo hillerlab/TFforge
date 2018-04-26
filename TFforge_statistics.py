@@ -12,7 +12,6 @@ import rpy2.robjects as robjects
 import rpy2.robjects.packages as rpackages
 from Bio import SeqIO, Phylo
 from Scoring_utilities import read_sequences_and_prune_tree, dollo_parsimony
-from TFforge import read_transcription_factors
 
 __description__ = "Analyses transcription factor motifs with respect to their differences in binding within a phylogeny of CRM sequences and the associated phenotype"
 suffix = ""									# suffix ending for newly generated files
@@ -120,7 +119,7 @@ def __analyse_sequences():
 
 	
 	elements = [line.strip() for line in open(args.elementfile, "r")]
-	transcription_factors = read_transcription_factors(args.motiflibrary)
+	transcription_factors = [line.strip() for line in open(args.motiflibrary, "r")]
 
 	#########################
 	# read scores

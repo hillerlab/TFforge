@@ -1,0 +1,15 @@
+element_sequences/element1_sequences.fa
+element_sequences/element2_sequences.fa
+element_sequences/element3_sequences.fa
+element_sequences/element4_sequences.fa
+element_sequences/element5_sequences.fa
+element_sequences/element6_sequences.fa
+element_sequences/element7_sequences.fa
+element_sequences/element8_sequences.fa
+element_sequences/element9_sequences.fa
+element_sequences/element10_sequences.fa
+element_sequences/element11_sequences.fa
+element_sequences/element12_sequences.fa
+element_sequences/element13_sequences.fa
+element_sequences/element14_sequences.fa
+element_sequences/element15_sequences.fa
