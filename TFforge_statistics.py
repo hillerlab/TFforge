@@ -23,8 +23,8 @@ def __get_arguments():
 
 	app.add_argument("treefile", 		type=str, help="phylogenetic tree given in newick format")
 	app.add_argument("motiflibrary",	type=str, help="wtmx file containing all transcription factor motifs")
-	app.add_argument("lossfile", 		type=str, help="file either in special loss format (.ls) or simple list")
-	app.add_argument("elementfile", 	type=str, help="file with names of putative elements; one line per element")
+	app.add_argument("lossfile", 		type=str, help="file listing trait loss species; one line per species")
+	app.add_argument("elementfile", 	type=str, help="file listing regulatory elements; one line per fasta file (.fa or .fasta)")
 
 	app.add_argument("--add_suffix", 	type=str, help="add this suffix to files")
 	app.add_argument("--filterspecies", type=str, help="skip species")
@@ -83,7 +83,7 @@ def compute_and_output_significance(args, scoreData, transcription_factors):
 	if args.elements: full_suffix += '_' + os.path.basename(args.elements)
 
 	with open("significant_factors%s"%full_suffix, "w") as summary:
-		summary.write("element\tPearson\t#pos\t#neg\n")
+		summary.write("element\tPearson\tNoPos\tNoNeg\n")
 		for tf in transcription_factors:
 			if tf+"+" in scoreData and tf+"-" in scoreData:
 				phenotypes = [1]*len(scoreData[tf+"+"]) + [0]*len(scoreData[tf+"-"])
