@@ -14,10 +14,10 @@ from Bio import SeqIO, Phylo
 from Scoring_utilities import read_sequences_and_prune_tree, dollo_parsimony
 
 __description__ = "Analyses transcription factor motifs with respect to their differences in binding within a phylogeny of CRM sequences and the associated phenotype"
-suffix = ""									# suffix ending for newly generated files
+scorefile = "scores"
 
 def __get_arguments():
-	global suffix
+	global scorefile
 	import argparse
 	app = argparse.ArgumentParser(description=__description__)
 
@@ -26,7 +26,7 @@ def __get_arguments():
 	app.add_argument("lossfile", 		type=str, help="file listing trait loss species; one line per species")
 	app.add_argument("elementfile", 	type=str, help="file listing regulatory elements; one line per fasta file (.fa or .fasta)")
 
-	app.add_argument("--add_suffix", 	type=str, help="add this suffix to files")
+	app.add_argument("--scorefile", 	type=str, help="name of score file")
 	app.add_argument("--filterspecies", type=str, help="skip species")
 	app.add_argument("--elements",		type=str, help="analyze only the elements specified in this file")
 
@@ -35,7 +35,7 @@ def __get_arguments():
 	app.add_argument("--debug", "-d", action="store_true")
 
 	args = app.parse_args()
-	if args.add_suffix is not None: 	suffix = args.add_suffix
+	if args.scorefile is not None: 		scorefile = args.scorefile
 	return args
 
 def test_significance(s, p):
@@ -79,10 +79,10 @@ def test_significance(s, p):
 	
 def compute_and_output_significance(args, scoreData, transcription_factors):
 	""" creates computes significance for every element and creates summarizing file """
-	full_suffix = suffix
+	full_suffix = scorefile
 	if args.elements: full_suffix += '_' + os.path.basename(args.elements)
 
-	with open("significant_factors%s"%full_suffix, "w") as summary:
+	with open("significant_factors_%s"%full_suffix, "w") as summary:
 		summary.write("element\tPearson\tNoPos\tNoNeg\n")
 		for tf in transcription_factors:
 			if tf+"+" in scoreData and tf+"-" in scoreData:
@@ -127,18 +127,18 @@ def __analyse_sequences():
 	scoreFileContent = {}
 	if args.elements:
 		logging.info("cropping scorefile down to element list")
-		sf = subprocess.check_output("grep -f %s scores%s"%(args.elements, suffix), shell=True).decode('utf-8').strip().split('\n')
+		sf = subprocess.check_output("grep -f %s %s"%(args.elements, scorefile), shell=True).decode('utf-8').strip().split('\n')
 	else:
-		sf = open("scores%s"%suffix)
+		sf = open(scorefile)
 
 	counter=0
 	c_nan = 0
 	for line in sf:
 		counter += 1
 		parts = line.split()
-		if parts[-1] != '<':	logging.fatal("Malformed scores%s file - line does not end with '<': %s"%(suffix, line))
+		if parts[-1] != '<':	logging.fatal("Malformed %s file - line does not end with '<': %s"%(scorefile, line))
 		tf, cne = parts[0], parts[1]
-		if (tf, cne) in scoreFileContent:	logging.fatal("Malformed scores%s file - two entries for TF-CNE pair: %s"%(suffix, line))	
+		if (tf, cne) in scoreFileContent:	logging.fatal("Malformed %s file - two entries for TF-CNE pair: %s"%(scorefile, line))	
 		if cne in elements:
 			scoreFileContent[tf,cne] = {}
 			try:
@@ -149,7 +149,7 @@ def __analyse_sequences():
 					else:
 						c_nan += 1
 			except Exception as err:
-				logging.fatal("Error occured while parsing scores%s at line '%s'"%(suffix, line))
+				logging.fatal("Error occured while parsing %s at line '%s'"%(scorefile, line))
 				raise err
 	if not args.elements: sf.close()
 	logging.info("finished reading scorefile")
@@ -165,7 +165,7 @@ def __analyse_sequences():
 
 	if args.no_missing_sequences:
 		tree = Phylo.read(args.treefile, 'newick')
-		phylo = dollo_parsimony(tree, losses)						# annotate with trait
+		phylo = dollo_parsimony(tree, losses)								# annotate with trait
 		sub_phylos = dict.fromkeys(elements, phylo)
 	else:
 		sub_phylos = {}
