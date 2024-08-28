@@ -11,7 +11,7 @@ TFforge (Transcription factor forward genomics) is a method to assiciate transci
 
 `git clone https://github.com/hillerlab/TFforge`
 
-Download Stubb (http://www.sinhalab.net/software) and newmat11 (http://www.robertnz.net/download.html)
+Download Stubb (https://github.com/UIUCSinhaLab/Stubb/) and newmat11 (http://www.robertnz.net/download.html)
 ```
 cp /path/to/stubb_2.1.tar.gz /path/to/newmat11.tar.gz .
 tar -xvf stubb_2.1.tar.gz
