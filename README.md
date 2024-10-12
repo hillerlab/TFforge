@@ -130,7 +130,7 @@ Filter branches with a relative length change above <x>
 ```
  
 # References
-[1] Langer BE, Hiller M. TFforge utilizes large-scale binding site divergence to identify transcriptional regulators involved in phenotypic differences. 
+[1] Langer BE, Hiller M. TFforge utilizes large-scale binding site divergence to identify transcriptional regulators involved in phenotypic differences. Nucleic Acids Research, 47(4), 2019
 
 [2] Sinha S, van Nimwegen E, Siggia ED. A Probabilistic Method to Detect Regulatory Modules. Bioinformatics, 19(S1), 2003
 
