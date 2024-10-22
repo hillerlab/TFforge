@@ -49,18 +49,18 @@ TFforge_statistics.py data/tree_simulation.nwk motifs.ls data/species_lost_simul
 
 # General workflow
 ## Input data
-- species tree in newick format
-- motif files in wtmx format (see example/data/ACA1.wtmx as example) which is: 
+* species tree in newick format
+* motif files in wtmx format (see example/data/ACA1.wtmx as example) which is: 
 > \>*motif_name*	*motif_length*	[optional fields]  
 > *pos1_freqA*	*pos1_freqC*	*pos1_freqG*	*pos1_freqT*  
 > *pos2_freqA*	*pos2_freqC*	*pos2_freqG*	*pos2_freqT*  
 > ..  
 > *posN_freqA*	*posN_freqC*	*posN_freqG*	*posN_freqT*  
 > \<  
-- motif list: path of wtmx files of one TF per line (see example/motifs.ls)
-- Phenotype-loss species list: one species per line (see example/data/species_lost_simulation.txt)
-- CRE fastafiles: each file contains the sequence for every (ancestral or extant) species
-- CRE list: path of fastafile of one CRE per line
+* motif list: path of wtmx files of one TF per line (see example/motifs.ls)
+* Phenotype-loss species list: one species per line (see example/data/species_lost_simulation.txt)
+* CRE fastafiles: each file contains the sequence for every (ancestral or extant) species
+* CRE list: path of fastafile of one CRE per line
 
 ## Step 1: Branch score computation
 Generate the TFforge branch_scoring commands for all CREs and TFs.
@@ -84,6 +84,13 @@ which should be concatenated into a file called "\<scorefile\>".
 TFforge_statistics.py <tree> <motif_list> <lost_species_list> <element_list>
 ```
 TFforge_statistics.py classifies branches into trait-loss and trait-preserving and assesses for every TF the significance the association of this classification with the branch scores of all CREs.
+
+## Output data
+The output (significant_factors_<score_file>.tsv) has 4 columns:
+> element	Pearson	NoPos	NoNeg
+
+These list for every transcription factor (*element*) the number of trait-loss branches (*NoPos*) and trait-preserving branches (*NoNeg*) and the significance of a positive Pearson correlation (Are trait-loss branches correlating with lower scores?), given by the p-value in the *Pearson* column. 
+
 
 ## Common Parameters
 #### TFforge.py
@@ -113,7 +120,7 @@ Analyse only the elements specified <file>
 --debug/-d
 ```
 
-####TFforge.py
+#### TFforge.py
 ```
 --no_ancestral_filter
 Turn of ancestral score filtering
